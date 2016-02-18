@@ -1,5 +1,7 @@
 ToDo
 ====
+* Check for pandoc installation
+* Check for hwinfo installation
 * ~~Add script parameter to save information~~
 * ~~Add more informations as model serial number and manufacturer~~
 * ~~[Spunge](http://sprunge.us) results~~

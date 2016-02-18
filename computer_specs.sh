@@ -32,6 +32,7 @@ function ascii() {
 	echo "      8       \______  /_______  / |____|    \___  >\___  >____  >      8"
 	echo "      0              \/        \/                \/     \/     \/       0"
 	echo "      OoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoOoO ponsfrilus 2016 OoO"
+	echo "                    download me on https://github.com/ponsfrilus/CSpecs  "
 	echo ""
 }
 
@@ -209,11 +210,12 @@ function check_my_specs() {
 # Usage info
 function help() {
 cat << EOF
-Usage: ${0##*/} [-hvrs] [-f OUTFILE]
+Usage: ${0##*/} [-hvrsp] [-f OUTFILE]
 Looks into your computer and write the result to standard output.
 
     -h          display this help and exit
     -f OUTFILE  write the result to OUTFILE (markdown)
+    -p          save result as PDF
     -r          raw information
     -s          sprunge output
     -v          verbose mode
@@ -227,7 +229,7 @@ then
     echo "This script needs to be run as root!"
 else
     OPTIND=1 # Reset is necessary if getopts was used previously in the script.  It is a good idea to make this local in a function.
-    while getopts ":hvf:rs" opt; do
+    while getopts ":hvf:rsp" opt; do
         case "$opt" in
             h)
                 help
@@ -241,6 +243,9 @@ else
                 ;;
             r)  # http://stackoverflow.com/questions/15184358/how-to-avoid-bash-command-substitution-to-remove-the-newline-character
                 raw_info_data=$(raw_info)
+                ;;
+            p)
+                pdf="pdf"
                 ;;
             s)
                 sprunge="sprunge"
@@ -262,16 +267,28 @@ else
     then
         # check_my_specs
         check_my_specs_data=$(check_my_specs)
-        echo "$check_my_specs_data"
-        echo "$raw_info_data"
+        echo "$check_my_specs_data" > tmp.md
+        echo "$raw_info_data" >> tmp.md
+        if [[ -n $pdf ]]
+        then
+            out_file=computer_specs_`date +"%Y-%m-%d_%H%M%S"`.pdf
+            pandoc -V papersize:a4paper -V geometry:margin=1cm tmp.md -o $out_file
+        fi
         if [[ -n $sprunge ]]
         then
-            echo "$check_my_specs_data" "$raw_info_data" | perl sprunge.pl
+            cat tmp.md | perl sprunge.pl
         fi
+        cat tmp.md
+        rm tmp.md
     else
         check_my_specs > $output_file
         echo "$raw_info_data" >> $output_file
         cat $output_file
+        if [[ -n $pdf ]]
+        then
+        echo "ICI"
+            pandoc -V papersize:a4paper -V geometry:margin=1cm $output_file -o computer_specs_`date +"%Y-%m-%d_%H%M%S"`.pdf
+        fi
         if [[ -n $sprunge ]]
         then
             cat "$output_file" | perl sprunge.pl

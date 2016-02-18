@@ -229,7 +229,7 @@ then
     echo "This script needs to be run as root!"
 else
     OPTIND=1 # Reset is necessary if getopts was used previously in the script.  It is a good idea to make this local in a function.
-    while getopts ":hvf:rsp" opt; do
+    while getopts ":hvf:rspq" opt; do
         case "$opt" in
             h)
                 help
@@ -250,6 +250,9 @@ else
             s)
                 sprunge="sprunge"
                 ;;
+            q)
+                quiet="quiet"
+                ;;
             '?')
                 help >&2
                 exit 1
@@ -265,30 +268,39 @@ else
 
     if [[ -z $output_file ]]
     then
-        # check_my_specs
         check_my_specs_data=$(check_my_specs)
         echo "$check_my_specs_data" > tmp.md
         echo "$raw_info_data" >> tmp.md
+        
         if [[ -n $pdf ]]
         then
             out_file=computer_specs_`date +"%Y-%m-%d_%H%M%S"`.pdf
             pandoc -V papersize:a4paper -V geometry:margin=1cm tmp.md -o $out_file
         fi
+        
         if [[ -n $sprunge ]]
         then
             cat tmp.md | perl sprunge.pl
         fi
-        cat tmp.md
+        
+        if [[ -z $quiet ]]
+        then
+            cat tmp.md
+        fi
         rm tmp.md
     else
         check_my_specs > $output_file
         echo "$raw_info_data" >> $output_file
-        cat $output_file
+        if [[ -z $quiet ]]
+        then
+            cat $output_file
+        fi
+        
         if [[ -n $pdf ]]
         then
-        echo "ICI"
             pandoc -V papersize:a4paper -V geometry:margin=1cm $output_file -o computer_specs_`date +"%Y-%m-%d_%H%M%S"`.pdf
         fi
+        
         if [[ -n $sprunge ]]
         then
             cat "$output_file" | perl sprunge.pl

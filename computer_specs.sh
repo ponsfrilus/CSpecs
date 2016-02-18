@@ -210,13 +210,16 @@ function check_my_specs() {
 # Usage info
 function help() {
 cat << EOF
-Usage: ${0##*/} [-hvrsp] [-f OUTFILE]
 Looks into your computer and write the result to standard output.
+
+Usage: ${0##*/} [-hvrspq] [-f OUTFILE]
+Exemple: sudo ./computer_specs.sh -r -s -p -q -f mytest.md
 
     -h          display this help and exit
     -f OUTFILE  write the result to OUTFILE (markdown)
     -p          save result as PDF
-    -r          raw information
+    -r          add raw information
+    -q          quiet mode
     -s          sprunge output
     -v          verbose mode
     

@@ -3,6 +3,8 @@ ToDo
 * Check for pandoc installation in case of -p
 * Check for hwinfo installation in case of -r
 * Check for pdflatex (texlive) in case of -p
+* Ask to open sprunge in case of -s (firefox...)
+* Ask to open pdf in case of -p (evince)
 * ~~Add script parameter to save information~~
 * ~~Add more informations as model serial number and manufacturer~~
 * ~~[Spunge](http://sprunge.us) results~~

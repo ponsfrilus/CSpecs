@@ -3,6 +3,8 @@ A bash script to get computer specs (ubuntu).
 
 Output exemple: http://sprunge.us/cNRN
 
+Output raw exemple: http://sprunge.us/cJKH
+
 
 ## Usage
 

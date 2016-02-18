@@ -2,21 +2,21 @@
 
 # found on http://www.sinisterstuf.org/blog/115/checking-computer-specs-in-linu 
 
-#This script reports the following specs about your PC:
-# -How much space is available on each hard disk drive
-# -How much space is used/available on each mounted partition
-# -How much memory is available on each RAM device
-# -How fast is each CPU core (single core machines only have 1 entry)
-# -The name, driver used and memory available from your graphics accelerator
+# This script reports the following specs about your PC:
+#  -How much space is available on each hard disk drive
+#  -How much space is used/available on each mounted partition
+#  -How much memory is available on each RAM device
+#  -How fast is each CPU core (single core machines only have 1 entry)
+#  -The name, driver used and memory available from your graphics accelerator
 
-#Some of the commands in this script require root privelages, so
-#it will display an error if you try to run it as a normal user.
+# Some of the commands in this script require root privelages, so
+# it will display an error if you try to run it as a normal user.
 
-#Written by Siôn le Roux (sion@sionleroux.com)
-#This script is in the public domain, but it would be nice if you let
-#me know if you like it, or have any suggestions for improvements! :-)
+# Written by Siôn le Roux (sion@sionleroux.com @sinisterstuf)
+# This script is in the public domain, but it would be nice if you let
+# me know if you like it, or have any suggestions for improvements! :-)
 
-#this is a function that outputs all the specs
+# this is a function that outputs all the specs
 function check_my_specs() {
     echo ""
     echo " = PC Specs = "
@@ -44,10 +44,13 @@ function check_my_specs() {
     done
     echo #after the 'subdomain' is found, it is used to get the card info
     echo "== Graphics =="
-    lspci -vs `lspci | grep VGA | sed 's/ .*//'` | grep -e "Memory" -e "VGA" -e "Kernel" | sed 's/^.//' | sed 's/^[0-9].*\: //' | sed 's/(.*)//'
+    for bus in `lspci | grep VGA | sed 's/ .*//'`
+    do
+        lspci -vs $bus | grep -e "Memory" -e "VGA" -e "Kernel" | sed 's/^.//' | sed 's/^[0-9].*\: //' | sed 's/(.*)//'
+    done
 }
 
-#call the function above if root, otherwise display an error
+# call the function above if root, otherwise display an error
 if [[ $UID -ne 0 ]]
 then
     echo "This script needs to be run as root!"

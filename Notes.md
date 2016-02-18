@@ -4,6 +4,8 @@ ToDo
     * Model serial number and manufacturer
 * [Spunge](http://sprunge.us) results
 * Save raw information of hwinfo, dmidecode, etc. ?
+* Create a MarkDown report
+   * PDF report with pandoc ?
 
 
 Links

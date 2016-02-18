@@ -1,7 +1,8 @@
 ToDo
 ====
-* Check for pandoc installation
-* Check for hwinfo installation
+* Check for pandoc installation in case of -p
+* Check for hwinfo installation in case of -r
+* Check for pdflatex (texlive) in case of -p
 * ~~Add script parameter to save information~~
 * ~~Add more informations as model serial number and manufacturer~~
 * ~~[Spunge](http://sprunge.us) results~~
